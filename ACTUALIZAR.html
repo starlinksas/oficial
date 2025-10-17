@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel de Edición</title>
+  <style>
+    body {
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      margin: 0;
+    }
+    .logo { text-align: center; margin-bottom: 20px; }
+    .logo img { width: 140px; height: auto; }
+    .wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .card {
+      background: #0f0f10;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1 1 350px;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+    }
+    h2 { margin-top: 0; margin-bottom: 16px; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: none;
+      background: #111;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 12px 20px;
+      border-radius: 6px;
+      border: none;
+      background: #fff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .result-box {
+      background: #111;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <img src="logo.png" alt="Logo">
+  </div>
+
+  <div class="wrap">
+
+    <!-- Bloque: Datos de compra -->
+    <div class="card">
+      <h2>Editar datos de compra</h2>
+      <form id="compraForm">
+        <label>Archivo de compra (ej: resumen.html)</label>
+        <input type="text" name="archivo" placeholder="ej: resumen.html" required />
+
+        <label>Nombre</label>
+        <input type="text" name="nombre" />
+
+        <label>Cédula</label>
+        <input type="text" name="cedula" />
+
+        <label>Email</label>
+        <input type="email" name="email" />
+
+        <label>Celular</label>
+        <input type="text" name="celular" />
+
+        <label>Dirección</label>
+        <input type="text" name="direccion" />
+
+        <label>Total a pagar (solo número)</label>
+        <input type="text" name="total" placeholder="ej: 489000" />
+
+        <label>Descripción adicional (opcional)</label>
+        <input type="text" name="descripcion" placeholder="ej: Incluye antena y plan básico" />
+
+        <label>Renombrar archivo (opcional)</label>
+        <input type="text" name="nuevoNombre" placeholder="nuevo_nombre.html" />
+
+        <button type="submit">Guardar cambios</button>
+      </form>
+      <div id="resultado-compra" class="result-box"></div>
+    </div>
+
+    <!-- Bloque: Usuarios -->
+    <div class="card">
+      <h2>Editar usuarios</h2>
+      <form id="usuariosForm">
+        <label>Seleccionar usuario</label>
+        <select id="usuarioSelect"></select>
+
+        <label>Nuevo usuario (correo o ID)</label>
+        <input type="text" id="nuevoUsuario" />
+
+        <label>Nueva contraseña</label>
+        <input type="text" id="nuevaClave" />
+
+        <button type="submit">Actualizar usuario</button>
+      </form>
+      <div id="resultado-usuarios" class="result-box"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // 🔧 CONFIG
+    const TOKEN = "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"; // 🔴 pon tu token de GitHub aquí
+    const REPO = "oficial"; // 🔴 repo donde están los archivos
+    const BRANCH = "INDEX";
+    const LOGIN_FILE = "index.html";   // archivo con usuarios
+
+    // 👉 Guardar datos de compra
+    document.getElementById("compraForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target).entries());
+      const archivo = data.archivo.trim();
+
+      // 1. Obtener archivo
+      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${archivo}?ref=${BRANCH}`, {
+        headers: { Authorization: `token ${TOKEN}` }
+      });
+      const file = await res.json();
+      if (!file.content) {
+        document.getElementById("resultado-compra").textContent = "❌ No se pudo obtener el archivo";
+        return;
+      }
+      const content = atob(file.content);
+
+      // 2. Reemplazos básicos
+      let newContent = content;
+      if (data.nombre) newContent = newContent.replace(/(<div id="user-nombre">)(.*?)(<\/div>)/, `$1${data.nombre}$3`);
+      if (data.cedula) newContent = newContent.replace(/(<div id="user-cedula">)(.*?)(<\/div>)/, `$1${data.cedula}$3`);
+      if (data.email) newContent = newContent.replace(/(<div id="user-email">)(.*?)(<\/div>)/, `$1${data.email}$3`);
+      if (data.celular) newContent = newContent.replace(/(<div id="user-celular">)(.*?)(<\/div>)/, `$1${data.celular}$3`);
+      if (data.direccion) newContent = newContent.replace(/(<div id="user-direccion">)(.*?)(<\/div>)/, `$1${data.direccion}$3`);
+      if (data.total) newContent = newContent.replace(/TOTAL A PAGAR:.*?COP/, `TOTAL A PAGAR: $${data.total} COP`);
+
+      // descripción
+      if (data.descripcion.trim() !== "") {
+        if (/id="descripcion-extra"/.test(newContent)) {
+          newContent = newContent.replace(/(<p id="descripcion-extra">)(.*?)(<\/p>)/, `$1${data.descripcion}$3`);
+        } else {
+          newContent = newContent.replace(/(<strong>TOTAL A PAGAR:.*?<\/p>)/, `$1\n<p id="descripcion-extra">${data.descripcion}</p>`);
+        }
+      } else {
+        newContent = newContent.replace(/<p id="descripcion-extra">.*?<\/p>/, "");
+      }
+
+      // 3. Guardar en GitHub
+      const destino = data.nuevoNombre || archivo;
+      await fetch(`https://api.github.com/repos/${REPO}/contents/${destino}`, {
+        method: "PUT",
+        headers: { Authorization: `token ${TOKEN}` },
+        body: JSON.stringify({
+          message: "Actualizar datos de compra",
+          content: btoa(unescape(encodeURIComponent(newContent))),
+          sha: file.sha,
+          branch: BRANCH
+        })
+      });
+
+      document.getElementById("resultado-compra").textContent = "✅ Datos de compra actualizados";
+    });
+
+    // 👉 Cargar usuarios
+    async function cargarUsuarios() {
+      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${LOGIN_FILE}?ref=${BRANCH}`, {
+        headers: { Authorization: `token ${TOKEN}` }
+      });
+      const file = await res.json();
+      if (!file.content) return;
+      const content = atob(file.content);
+
+      // Extraer bloque usuarios
+      const match = content.match(/const\s+usuarios\s*=\s*{([\s\S]*?)}\s*;/);
+
+      if (!match) return;
+      const usuariosStr = match[1].trim();
+
+      const usuarios = {};
+      usuariosStr.split("\n").forEach(line => {
+        const parts = line.split(":");
+        if (parts.length === 2) {
+          const key = parts[0].replace(/["',]/g, "").trim();
+          const val = parts[1].replace(/["',]/g, "").trim();
+          if (key) usuarios[key] = val;
+        }
+      });
+
+      // llenar select
+      const sel = document.getElementById("usuarioSelect");
+      sel.innerHTML = "";
+      Object.keys(usuarios).forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u;
+        opt.textContent = u;
+        sel.appendChild(opt);
+      });
+
+      sel.addEventListener("change", () => {
+        document.getElementById("nuevoUsuario").value = sel.value;
+        document.getElementById("nuevaClave").value = usuarios[sel.value];
+      });
+
+      // inicial
+      if (Object.keys(usuarios).length > 0) {
+        sel.value = Object.keys(usuarios)[0];
+        sel.dispatchEvent(new Event("change"));
+      }
+
+      // Guardar handler
+      document.getElementById("usuariosForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const oldUser = sel.value;
+        const newUser = document.getElementById("nuevoUsuario").value.trim();
+        const newPass = document.getElementById("nuevaClave").value.trim();
+
+        usuarios[newUser] = newPass;
+        if (newUser !== oldUser) delete usuarios[oldUser];
+
+        // reconstruir bloque
+        let nuevoBloque = "const usuarios = {\n";
+        for (const [u, p] of Object.entries(usuarios)) {
+          nuevoBloque += `  "${u}": "${p}",\n`;
+        }
+        nuevoBloque += "};";
+
+        const newContent = content.replace(/const usuarios\s*=\s*{[\s\S]*?};/, nuevoBloque);
+
+        await fetch(`https://api.github.com/repos/${REPO}/contents/${LOGIN_FILE}`, {
+          method: "PUT",
+          headers: { Authorization: `token ${TOKEN}` },
+          body: JSON.stringify({
+            message: `Actualizar usuario ${oldUser}`,
+            content: btoa(unescape(encodeURIComponent(newContent))),
+            sha: file.sha,
+            branch: BRANCH
+          })
+        });
+
+        document.getElementById("resultado-usuarios").textContent = "✅ Usuario actualizado en GitHub";
+        cargarUsuarios();
+      });
+    }
+
+    cargarUsuarios();
+  </script>
+</body>
+</html>

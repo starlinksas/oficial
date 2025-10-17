@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resumen de Compra</title>
+  <style>
+    body {
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      width: 140px;
+      height: auto;
+    }
+
+    .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      background: #0f0f10;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1 1 350px;
+      max-width: 500px;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .readonly-box {
+      background: #111;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .producto {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .producto img {
+      width: 100px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .producto-info {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .producto-info p {
+      margin: 6px 0;
+    }
+
+    button, .btn-parpadeante {
+      padding: 12px 20px;
+      border-radius: 6px;
+      border: none;
+      background: #fff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    a.boton-pago {
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .cerrar-sesion {
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .cerrar-sesion a {
+      color: #ccc;
+      text-decoration: underline;
+    }
+
+    .pago-descripcion {
+      background: #111;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .pago-descripcion h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #ffd700; /* dorado llamativo */
+    }
+
+    @media (max-width: 600px) {
+      .producto {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .producto img {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .producto-info {
+        width: 100%;
+      }
+    }
+
+    /* Botón parpadeante */
+    @keyframes parpadeo {
+      0%, 100% {
+        background-color: rgb(255, 0, 0);
+      }
+      50% {
+        background-color: transparent;
+      }
+    }
+
+    .btn-parpadeante {
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+      animation: parpadeo 1s infinite;
+      border-radius: 5px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 12px 20px;
+      margin-top: 20px;
+      width: 100%;         /* ajustado al ancho de la tarjeta */
+      box-sizing: border-box; /* evita desbordeSSs */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="logo.png" alt="Starlink Logo">
+  </div>
+
+  <div class="wrap">
+
+    <!-- Panel de usuario tf-->
+    <div class="card">
+      <h2>Datos del Usuario</h2>
+
+      <label>Nombres y Apellidos</label>
+      <div class="readonly-box">Janer Smith Alvis silva</div>
+
+      <label style="display: ;">Cédula</label>
+      <div style="display:;" class="readonly-box">1087132736</div>
+
+      <label>Correo electrónico</label>
+      <div class="readonly-box">alvisjaner@hotmail.com</div>
+
+      <label>Celular</label>
+      <div class="readonly-box">+57 3205433245</div>
+
+      <label>Dirección de envío</label>
+      <div class="readonly-box">Casa 52 vereda San Nicolás acacias meta - colombia</div>
+    </div>
+
+    <!-- Panel del producto -->
+    <div class="card">
+      <h2>OFERTA ANTENA STARLINK MINI</h2>
+
+      <div class="producto">
+        <img src="./producto.png" alt="Producto Starlink">
+        <div class="producto-info">
+          <p><strong>Kit Starlink</strong></p>
+          <p>Internet satelital de alta velocidad, sin interrupciones solo conecta y apunta al cielo.</p>
+          <p><strong>ANTENA:  ̶ ̶$̶8̶0̶0̶.̶0̶0̶0̶  $400.000</strong></p>
+          <p><strong>PLAN ILIMITADO: $89.000 /mes</strong></p>
+          <p><strong> </strong></p> <br>
+
+          <p style="font-size:large;"><strong>TOTAL A PAGAR:   $489.000 COP </strong></p>
+        </div>
+      </div>
+
+      <!-- Datos de puy87yago -->
+      <div style="display:none ;" class="pago-descripcion">
+        <p>EL CAJERO DE EFECTY TE PEDIRA ESTOS DATOS</p>
+      <p>NUMERO CONVENIO: 110757</p>
+      <P>Referencia de pago:  12836 40927 04</P>
+      
+      </div>
+
+      <!-- Botón parpadeante con link -->
+      <a style="display:;" href="" target="_blank" class="btn-parpadeante">
+        PAGO PENDIENTE ESPERANDO TRANSFERENCIA
+      </a>
+
+      <div class="cerrar-sesion">
+        <a href="index.html">Cerrar sesión</a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
