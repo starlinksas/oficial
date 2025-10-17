@@ -1,144 +1,217 @@
-<!DOCTYPE html>
-<html lang='es'>
+<!doctype html>
+<html lang="es">
 <head>
-  <meta charset='utf-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <title>Resumen de Compra</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Inter, system-ui, Arial, sans-serif;
-      background: #000;
-      color: #fff;
-      padding: 20px;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
       margin: 0;
-    }
-    .logo { text-align: center; margin-bottom: 20px; }
-    .logo img { width: 160px; height: auto; }
-    .wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .card {
-      background: #0f0f10;
       padding: 20px;
-      border-radius: 12px;
-      flex: 1 1 350px;
-      max-width: 500px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      width: 140px;
+      height: auto;
+    }
+
+    .login-container {
+      background: #0f0f10;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 100%;
       box-shadow: 0 0 20px rgba(255,255,255,0.05);
     }
-    h2 { margin-top: 0; margin-bottom: 16px; text-align:center; }
-    label { font-weight: bold; display: block; margin-top: 10px; }
-    .readonly-box {
-      background: #111;
-      padding: 10px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      border: 1px solid #222;
-      word-wrap: break-word;
-    }
-    .producto {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 16px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-    .producto img { width: 100px; height: auto; border-radius: 8px; flex-shrink: 0; }
-    .producto-info { flex: 1; min-width: 180px; }
-    .producto-info p { margin: 6px 0; }
 
-    /* 🔴 Botón rojo parpadeante sin padding */
-    .btn-parpadeante {
-      display: block;
-      height: 45px;
-      line-height: 45px;
-      border-radius: 8px;
-      border: none;
-      background: #ff0000;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 25px;
-      width: 100%;
+    h2 {
+      margin-bottom: 20px;
       text-align: center;
-      animation: blink 1.5s infinite;
-      text-decoration: none;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
-    }
-    @keyframes blink {
-      0%, 100% { background: #ff0000; color: #fff; }
-      50% { background: #fff; color: #ff0000; }
+      font-size: 22px;
     }
 
-    .cerrar-sesion { text-align: center; margin-top: 14px; }
-    .cerrar-sesion a { color: #ccc; text-decoration: underline; }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
 
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #111;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: white;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #ddd;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* 🔹 BOTÓN FLOTANTE DE WHATSAPP */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      border-radius: 50%;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
+
+    .whatsapp-float img {
+      width: 35px;
+      height: 35px;
+    }
+
+    /* 🔹 FOOTER */
     footer {
       width: 100%;
       text-align: center;
-      margin-top: 60px;
+      margin-top: 80px;
       padding: 15px 10px;
       background: #0a0a0a;
       color: #bbb;
       font-size: 14px;
       border-top: 1px solid #222;
     }
-    footer span { display: block; color: #999; }
 
-    @media (max-width: 600px) {
-      .producto {
-        flex-direction: column;
-        align-items: flex-start;
+    footer span {
+      display: block;
+      color: #999;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 10px;
       }
-      .producto img {
-        width: 80%;
-        max-width: 250px;
-        margin: 0 auto;
+
+      .login-container {
+        padding: 20px;
       }
-      .btn-parpadeante {
-        width: 100%;
-        margin-top: 20px;
-        height: 45px;
-        line-height: 45px;
+
+      h2 {
+        font-size: 20px;
+      }
+
+      .whatsapp-float {
+        width: 55px;
+        height: 55px;
+        bottom: 15px;
+        right: 15px;
+      }
+
+      .whatsapp-float img {
+        width: 30px;
+        height: 30px;
+      }
+
+      footer {
+        font-size: 12px;
+        padding: 12px;
       }
     }
   </style>
 </head>
 <body>
-  <div class='logo'>
-    <img src='logo.png' alt='Starlink Logo'>
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="logo.png" alt="Logo">
   </div>
 
-  <div class='wrap'>
-    <div class='card'>
-      <h2>Datos del Usuario</h2>
-      <label>Nombres</label><div class='readonly-box'>{$nombres}</div>
-      <label>Apellidos</label><div class='readonly-box'>{$apellidos}</div>
-      <label>Cédula</label><div class='readonly-box'>{$cedula}</div>
-      <label>Correo electrónico</label><div class='readonly-box'>".($email ?: 'No posee')."</div>
-      <label>Dirección de envío</label><div class='readonly-box'>{$direccion}</div>
-    </div>
+  <!-- Formulario de login -->
+  <div class="login-container">
+    <h2>Iniciar Sesión</h2>
 
-    <div class='card'>
-      <h2>OFERTA ANTENA STARLINK MINI</h2>
-      <div class='producto'>
-        <img src='./producto.png' alt='Producto Starlink'>
-        <div class='producto-info'>
-          <p><strong>Kit Starlink</strong></p>
-          <p>Internet satelital de alta velocidad, sin interrupciones, solo conecta y apunta al cielo.</p>
-          <p><strong>ANTENA: ̶$̶8̶0̶0̶.̶0̶0̶0̶ → $400.000</strong></p>
-          <p><strong>PLAN: $89.000 /mes</strong></p>
-          <p style='font-size:large;'><strong>TOTAL A PAGAR: $489.000 COP</strong></p>
-        </div>
-      </div>
-      <a href='#' class='btn-parpadeante'>PAGO PENDIENTE ESPERANDO TRANSFERENCIA</a>
-      <div class='cerrar-sesion'><a href='index.html'>Cerrar sesión</a></div>
-    </div>
+    <label for="username">Correo electronico</label>
+    <input type="text" id="username" placeholder="Ingresa tu usuario" autocomplete="off" />
+
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" placeholder="Ingresa tu contraseña" />
+
+    <button onclick="login()">Entrar</button>
+
+    <p style="text-align: center;">SOLICITA A UN ASESOR TU USUARIO</p>
+
+    <div class="error" id="error-msg"></div>
   </div>
 
-  <footer>
-    <span><strong>DIRECCIÓN BODEGA ÚNICA EN COLOMBIA</strong></span>
-    <span><strong>CRR 8 · 13-49 · PEREIRA · RISARALDA</strong></span>
-    <span><strong>STARLINK COLOMBIA</strong></span>
-    <span>TODOS LOS DERECHOS RESERVADOS © 2025</span>
-  </footer>
+  <!-- 🔹 BOTÓN FLOTANTE DE WHATSAPP -->
+ 
+  </a>
+
+  <!-- 🔹 FOOTER -->
+ 
+
+  <script>
+    // 👥 Usuarios y contraseñas
+    const usuarios = {
+      "Obrasymontajes76@gmail.com": "79864491",
+      "alvisjaner@hotmail.com": "1087132736",
+      "27638780": "27638780",
+      "jorgeluisgutierrez1988@gmail.com": "1010074631",
+      "senagarcianohoraluz@gmail.com": "50964783"
+    };
+
+    function login() {
+      const usuario = document.getElementById("username").value.trim();
+      const clave = document.getElementById("password").value.trim();
+      const errorMsg = document.getElementById("error-msg");
+
+      if (usuarios[usuario] && usuarios[usuario] === clave) {
+        window.location.href = `${usuario}.html`;
+      } else {
+        errorMsg.textContent = "Usuario o contraseña incorrectos.";
+      }
+    }
+  </script>
+
 </body>
-</html>"
+</html>
