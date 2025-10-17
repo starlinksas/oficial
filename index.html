@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Resumen de Compra</title>
+  <style>
+    body {
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      margin: 0;
+    }
+    .logo { text-align: center; margin-bottom: 20px; }
+    .logo img { width: 160px; height: auto; }
+    .wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .card {
+      background: #0f0f10;
+      padding: 20px;
+      border-radius: 12px;
+      flex: 1 1 350px;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+    }
+    h2 { margin-top: 0; margin-bottom: 16px; text-align:center; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    .readonly-box {
+      background: #111;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border: 1px solid #222;
+      word-wrap: break-word;
+    }
+    .producto {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .producto img { width: 100px; height: auto; border-radius: 8px; flex-shrink: 0; }
+    .producto-info { flex: 1; min-width: 180px; }
+    .producto-info p { margin: 6px 0; }
+
+    /* 🔴 Botón rojo parpadeante sin padding */
+    .btn-parpadeante {
+      display: block;
+      height: 45px;
+      line-height: 45px;
+      border-radius: 8px;
+      border: none;
+      background: #ff0000;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 25px;
+      width: 100%;
+      text-align: center;
+      animation: blink 1.5s infinite;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+    }
+    @keyframes blink {
+      0%, 100% { background: #ff0000; color: #fff; }
+      50% { background: #fff; color: #ff0000; }
+    }
+
+    .cerrar-sesion { text-align: center; margin-top: 14px; }
+    .cerrar-sesion a { color: #ccc; text-decoration: underline; }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      margin-top: 60px;
+      padding: 15px 10px;
+      background: #0a0a0a;
+      color: #bbb;
+      font-size: 14px;
+      border-top: 1px solid #222;
+    }
+    footer span { display: block; color: #999; }
+
+    @media (max-width: 600px) {
+      .producto {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .producto img {
+        width: 80%;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+      .btn-parpadeante {
+        width: 100%;
+        margin-top: 20px;
+        height: 45px;
+        line-height: 45px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class='logo'>
+    <img src='logo.png' alt='Starlink Logo'>
+  </div>
+
+  <div class='wrap'>
+    <div class='card'>
+      <h2>Datos del Usuario</h2>
+      <label>Nombres</label><div class='readonly-box'>{$nombres}</div>
+      <label>Apellidos</label><div class='readonly-box'>{$apellidos}</div>
+      <label>Cédula</label><div class='readonly-box'>{$cedula}</div>
+      <label>Correo electrónico</label><div class='readonly-box'>".($email ?: 'No posee')."</div>
+      <label>Dirección de envío</label><div class='readonly-box'>{$direccion}</div>
+    </div>
+
+    <div class='card'>
+      <h2>OFERTA ANTENA STARLINK MINI</h2>
+      <div class='producto'>
+        <img src='./producto.png' alt='Producto Starlink'>
+        <div class='producto-info'>
+          <p><strong>Kit Starlink</strong></p>
+          <p>Internet satelital de alta velocidad, sin interrupciones, solo conecta y apunta al cielo.</p>
+          <p><strong>ANTENA: ̶$̶8̶0̶0̶.̶0̶0̶0̶ → $400.000</strong></p>
+          <p><strong>PLAN: $89.000 /mes</strong></p>
+          <p style='font-size:large;'><strong>TOTAL A PAGAR: $489.000 COP</strong></p>
+        </div>
+      </div>
+      <a href='#' class='btn-parpadeante'>PAGO PENDIENTE ESPERANDO TRANSFERENCIA</a>
+      <div class='cerrar-sesion'><a href='index.html'>Cerrar sesión</a></div>
+    </div>
+  </div>
+
+  <footer>
+    <span><strong>DIRECCIÓN BODEGA ÚNICA EN COLOMBIA</strong></span>
+    <span><strong>CRR 8 · 13-49 · PEREIRA · RISARALDA</strong></span>
+    <span><strong>STARLINK COLOMBIA</strong></span>
+    <span>TODOS LOS DERECHOS RESERVADOS © 2025</span>
+  </footer>
+</body>
+</html>"
